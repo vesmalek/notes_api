@@ -22,3 +22,5 @@ __pycache__/
 # Build files
 dist/
 build/
+
+notes_api_brief.md
