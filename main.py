@@ -21,7 +21,7 @@ class NoteUpdate(BaseModel):
 
 # DONE: In-memory storage setup with auto-incrementing ID
 
-notes: dict = []
+notes = []
 next_id: int = 1
 
 # DONE: Helper function for finding a note by ID
@@ -33,6 +33,20 @@ def find_note(note_id: int) -> dict | None:
     return None
 
 # TODO: POST /notes — create a note, return 201
+@app.post("/notes", status_code=201)
+async def create_note(note: NoteCreate):
+    global next_id
+
+    new_note = {
+        "id": next_id,
+        **note.model_dump()
+    }
+    
+    notes.append(new_note)
+
+    next_id += 1
+    return new_note
+
 # TODO: GET /notes/{note_id} — get one note, 404 if missing
 # TODO: PUT /notes/{note_id} — full update, 404 if missing
 # TODO: DELETE /notes/{note_id} — delete, 204 on success, 404 if missing
