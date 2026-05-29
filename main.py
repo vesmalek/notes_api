@@ -32,7 +32,7 @@ def find_note(note_id: int) -> dict | None:
             return note
     return None
 
-# TODO: POST /notes — create a note, return 201
+# DONE: POST /notes — create a note, return 201
 @app.post("/notes", status_code=201)
 async def create_note(note: NoteCreate):
     global next_id
