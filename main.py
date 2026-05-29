@@ -48,6 +48,12 @@ async def create_note(note: NoteCreate):
     return new_note
 
 # TODO: GET /notes/{note_id} — get one note, 404 if missing
+
+# TODO: get /notes?? Check about this in the assignment
+
+
 # TODO: PUT /notes/{note_id} — full update, 404 if missing
+
+
 # TODO: DELETE /notes/{note_id} — delete, 204 on success, 404 if missing
 
