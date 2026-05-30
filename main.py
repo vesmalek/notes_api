@@ -50,7 +50,8 @@ async def create_note(note: NoteCreate):
 # TODO: GET /notes/{note_id} — get one note, 404 if missing
 
 @app.get("/notes/{note_id}")
-async def get_note():
+async def get_note(note_id: int):
+    note = find_note(note_id)
     pass
 
 # TODO: get /notes?? Check about this in the assignment
