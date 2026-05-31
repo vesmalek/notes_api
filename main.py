@@ -52,7 +52,11 @@ async def create_note(note: NoteCreate):
 @app.get("/notes/{note_id}")
 async def get_note(note_id: int):
     note = find_note(note_id)
-    pass
+    
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found!")
+    
+    return note
 
 # TODO: get /notes?? Check about this in the assignment
 
