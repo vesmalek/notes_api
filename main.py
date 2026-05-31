@@ -47,7 +47,7 @@ async def create_note(note: NoteCreate):
     next_id += 1
     return new_note
 
-# TODO: GET /notes/{note_id} — get one note, 404 if missing
+# DONE: GET /notes/{note_id} — get one note, 404 if missing
 
 @app.get("/notes/{note_id}")
 async def get_note(note_id: int):
@@ -58,10 +58,16 @@ async def get_note(note_id: int):
     
     return note
 
-# TODO: get /notes?? Check about this in the assignment
+# TODO: Build the list endpoint only `GET /notes` — but build it properly. Check notes_api_brief.md for more details
+
+# TODO: Implement the query params as specified in the briefing doc
+
+@app.get("/notes")
+async def get_notes():
+    return notes
 
 
-# TODO: PUT /notes/{note_id} — full update, 404 if missing
+# DONE: PUT /notes/{note_id} — full update, 404 if missing
 @app.put("/notes/{note_id}")
 async def update_note(note_id: int, note: NoteUpdate):
     result = find_note(note_id)
@@ -78,7 +84,7 @@ async def update_note(note_id: int, note: NoteUpdate):
     return result
 
 
-# TODO: DELETE /notes/{note_id} — delete, 204 on success, 404 if missing
+# DONE: DELETE /notes/{note_id} — delete, 204 on success, 404 if missing
 
 @app.delete("/notes/{note_id}")
 async def delete_note(note_id: int):
