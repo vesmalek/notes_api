@@ -80,3 +80,14 @@ async def update_note(note_id: int, note: NoteUpdate):
 
 # TODO: DELETE /notes/{note_id} — delete, 204 on success, 404 if missing
 
+@app.delete("/notes/{note_id}")
+async def delete_note(note_id: int):
+    note = find_note(note_id)
+
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found!")
+    
+    notes.remove(note)
+
+    return f"Note deleted successfully!"
+
