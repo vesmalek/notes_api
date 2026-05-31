@@ -62,6 +62,20 @@ async def get_note(note_id: int):
 
 
 # TODO: PUT /notes/{note_id} — full update, 404 if missing
+@app.put("/notes/{note_id}")
+async def update_note(note_id: int, note: NoteUpdate):
+    result = find_note(note_id)
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Note not found!")
+    
+    result["title"] = note.title
+    result["content"] = note.content
+    result["tag"] = note.tag
+    result["pinned"] = note.pinned
+    result["archived"] = note.archived
+
+    return result
 
 
 # TODO: DELETE /notes/{note_id} — delete, 204 on success, 404 if missing
