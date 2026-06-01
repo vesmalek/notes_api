@@ -63,8 +63,8 @@ async def get_note(note_id: int):
 # TODO: Implement the query params as specified in the briefing doc
 
 @app.get("/notes")
-async def get_notes():
-    return notes
+async def get_notes(skip: int=0, limit: int = 10):
+    return notes[skip: skip + limit]
 
 
 # DONE: PUT /notes/{note_id} — full update, 404 if missing
