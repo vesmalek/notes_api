@@ -63,7 +63,14 @@ async def get_note(note_id: int):
 # TODO: Implement the query params as specified in the briefing doc
 
 @app.get("/notes")
-async def get_notes(skip: int=0, limit: int = 10):
+async def get_notes(
+    skip: int=0, 
+    limit: int = 10,
+    archived: bool = False,
+    tag: str | None = None,
+    pinned: bool | None = None,
+    search: str | None = None 
+):
     return notes[skip: skip + limit]
 
 
