@@ -76,11 +76,17 @@ async def get_notes(
     
     if tag:
         return [note for note in notes if note["tag"] == tag][skip: skip + limit]
-    
-    # Apply filters in this order: → `search` → paginate last.
 
     if pinned:
         return [note for note in notes if note["pinned"]][skip: skip + limit]
+    
+    # Apply filters in this order: → `search` → paginate last.
+    if search:
+        search_results = []
+        for note in notes:
+            if search in note["title"] or search in note["content"] or search in note["tag"]:
+                search_results.append(note)
+        return search_results[skip: skip + limit]
 
     return notes[skip: skip + limit]
 
