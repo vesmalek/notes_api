@@ -80,7 +80,6 @@ async def get_notes(
     if pinned:
         return [note for note in notes if note["pinned"]][skip: skip + limit]
     
-    # Apply filters in this order: → `search` → paginate last.
     if search:
         search_results = []
         for note in notes:
@@ -107,6 +106,13 @@ async def update_note(note_id: int, note: NoteUpdate):
 
     return result
 
+# Add dedicated action endpoints and enforce the remaining business rules.
+
+# - `PUT /notes/{note_id}/pin` — sets `pinned` to `True`, no body needed
+# - `PUT /notes/{note_id}/unpin` — sets `pinned` to `False`, no body needed
+# - `PUT /notes/{note_id}/archive` — sets `archived` to `True`, no body needed
+# - Enforce that `title` and `content` cannot be empty strings — return `400` with a clear message if they are
+# - On the list endpoint, sort results so pinned notes come first before returning
 
 # DONE: DELETE /notes/{note_id} — delete, 204 on success, 404 if missing
 
