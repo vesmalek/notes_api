@@ -74,8 +74,8 @@ async def get_notes(
             if search in note["title"] or search in note["content"] or search in note["tag"]:
                 search_results.append(note)
         return search_results[skip: skip + limit]
-
-    return notes[skip: skip + limit]
+    sorted_list = sorted(notes, key=lambda d: d['pinned'], reverse=True)
+    return sorted_list[skip: skip + limit]
 
 @app.put("/notes/{note_id}")
 async def update_note(note_id: int, note: NoteUpdate):
