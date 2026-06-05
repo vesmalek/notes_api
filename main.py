@@ -129,6 +129,15 @@ async def pin_note(note_id: int):
     result['pin'] = False
 
 # - `PUT /notes/{note_id}/archive` — sets `archived` to `True`, no body needed
+@app.put("/notes/{note_id}/archive")
+async def pin_note(note_id: int):
+    result = find_note(note_id)
+
+    if not result:
+        raise HTTPException(status_code=404, detail='Note not found!')
+    
+    result['archived'] = True
+
 # - Enforce that `title` and `content` cannot be empty strings — return `400` with a clear message if they are
 # - On the list endpoint, sort results so pinned notes come first before returning
 
