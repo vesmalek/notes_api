@@ -115,6 +115,8 @@ async def pin_note(note_id: int):
 
     if not result:
         raise HTTPException(status_code=404, detail='Note not found!')
+    elif not result['title'].strip() or not result['content'].strip():
+        raise HTTPException(status_code=400, detail='Title or content missing')
     
     result['pin'] = True
 
@@ -125,6 +127,8 @@ async def pin_note(note_id: int):
 
     if not result:
         raise HTTPException(status_code=404, detail='Note not found!')
+    elif not result['title'].strip() or not result['content'].strip():
+        raise HTTPException(status_code=400, detail='Title or content missing')
     
     result['pin'] = False
 
@@ -135,6 +139,8 @@ async def pin_note(note_id: int):
 
     if not result:
         raise HTTPException(status_code=404, detail='Note not found!')
+    elif not result['title'].strip() or not result['content'].strip():
+        raise HTTPException(status_code=400, detail='Title or content missing')
     
     result['archived'] = True
 
