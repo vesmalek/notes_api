@@ -3,8 +3,6 @@ from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
-# DONE: The Pydantic models (create and update)
-
 class NoteCreate(BaseModel):
     title: str
     content: str
@@ -19,12 +17,8 @@ class NoteUpdate(BaseModel):
     pinned: bool = False
     archived: bool = False
 
-# DONE: In-memory storage setup with auto-incrementing ID
-
 notes = []
 next_id: int = 1
-
-# DONE: Helper function for finding a note by ID
 
 def find_note(note_id: int) -> dict | None:
     for note in notes:
@@ -32,7 +26,6 @@ def find_note(note_id: int) -> dict | None:
             return note
     return None
 
-# DONE: POST /notes — create a note, return 201
 @app.post("/notes", status_code=201)
 async def create_note(note: NoteCreate):
     global next_id
@@ -47,8 +40,6 @@ async def create_note(note: NoteCreate):
     next_id += 1
     return new_note
 
-# DONE: GET /notes/{note_id} — get one note, 404 if missing
-
 @app.get("/notes/{note_id}")
 async def get_note(note_id: int):
     note = find_note(note_id)
@@ -58,10 +49,7 @@ async def get_note(note_id: int):
     
     return note
 
-# TODO: Build the list endpoint only `GET /notes` — but build it properly. Check notes_api_brief.md for more details
-
-# TODO: Implement the query params as specified in the briefing doc
-
+#TODO: - On the list endpoint, sort results so pinned notes come first before returning
 @app.get("/notes")
 async def get_notes(
     skip: int=0, 
@@ -89,8 +77,6 @@ async def get_notes(
 
     return notes[skip: skip + limit]
 
-
-# DONE: PUT /notes/{note_id} — full update, 404 if missing
 @app.put("/notes/{note_id}")
 async def update_note(note_id: int, note: NoteUpdate):
     result = find_note(note_id)
@@ -106,9 +92,6 @@ async def update_note(note_id: int, note: NoteUpdate):
 
     return result
 
-# Add dedicated action endpoints and enforce the remaining business rules.
-
-# - `PUT /notes/{note_id}/pin` — sets `pinned` to `True`, no body needed
 @app.put("/notes/{note_id}/pin")
 async def pin_note(note_id: int):
     result = find_note(note_id)
@@ -120,7 +103,6 @@ async def pin_note(note_id: int):
     
     result['pin'] = True
 
-# - `PUT /notes/{note_id}/unpin` — sets `pinned` to `False`, no body needed
 @app.put("/notes/{note_id}/pin")
 async def pin_note(note_id: int):
     result = find_note(note_id)
@@ -132,7 +114,6 @@ async def pin_note(note_id: int):
     
     result['pin'] = False
 
-# - `PUT /notes/{note_id}/archive` — sets `archived` to `True`, no body needed
 @app.put("/notes/{note_id}/archive")
 async def pin_note(note_id: int):
     result = find_note(note_id)
@@ -143,11 +124,6 @@ async def pin_note(note_id: int):
         raise HTTPException(status_code=400, detail='Title or content missing')
     
     result['archived'] = True
-
-# - Enforce that `title` and `content` cannot be empty strings — return `400` with a clear message if they are
-# - On the list endpoint, sort results so pinned notes come first before returning
-
-# DONE: DELETE /notes/{note_id} — delete, 204 on success, 404 if missing
 
 @app.delete("/notes/{note_id}")
 async def delete_note(note_id: int):
