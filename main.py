@@ -74,9 +74,13 @@ async def get_notes(
     if archived:
         return [note for note in notes if note["archived"]][skip: skip + limit]
     
-    # Apply filters in this order: `tag` → `pinned` → `search` → paginate last.
     if tag:
         return [note for note in notes if note["tag"] == tag][skip: skip + limit]
+    
+    # Apply filters in this order: → `search` → paginate last.
+
+    if pinned:
+        return [note for note in notes if note["pinned"]][skip: skip + limit]
 
     return notes[skip: skip + limit]
 
