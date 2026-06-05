@@ -109,6 +109,15 @@ async def update_note(note_id: int, note: NoteUpdate):
 # Add dedicated action endpoints and enforce the remaining business rules.
 
 # - `PUT /notes/{note_id}/pin` — sets `pinned` to `True`, no body needed
+@app.put("/notes/{note_id}/pin")
+async def pin_note(note_id: int):
+    result = find_note(note_id)
+
+    if not result:
+        raise HTTPException(status_code=404, detail='Note not found!')
+    
+    result['pin'] = True
+
 # - `PUT /notes/{note_id}/unpin` — sets `pinned` to `False`, no body needed
 # - `PUT /notes/{note_id}/archive` — sets `archived` to `True`, no body needed
 # - Enforce that `title` and `content` cannot be empty strings — return `400` with a clear message if they are
