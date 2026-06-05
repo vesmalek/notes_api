@@ -49,7 +49,6 @@ async def get_note(note_id: int):
     
     return note
 
-#TODO: - On the list endpoint, sort results so pinned notes come first before returning
 @app.get("/notes")
 async def get_notes(
     skip: int=0, 
@@ -77,6 +76,39 @@ async def get_notes(
     sorted_list = sorted(notes, key=lambda d: d['pinned'], reverse=True)
     return sorted_list[skip: skip + limit]
 
+@app.put("/notes/{note_id}/pin")
+async def pin_note(note_id: int):
+    result = find_note(note_id)
+
+    if not result:
+        raise HTTPException(status_code=404, detail='Note not found!')
+    elif not result['title'].strip() or not result['content'].strip():
+        raise HTTPException(status_code=400, detail='Title or content missing')
+    
+    result['pinned'] = True
+
+@app.put("/notes/{note_id}/unpin")
+async def pin_note(note_id: int):
+    result = find_note(note_id)
+
+    if not result:
+        raise HTTPException(status_code=404, detail='Note not found!')
+    elif not result['title'].strip() or not result['content'].strip():
+        raise HTTPException(status_code=400, detail='Title or content missing')
+    
+    result['pinned'] = False
+
+@app.put("/notes/{note_id}/archive")
+async def pin_note(note_id: int):
+    result = find_note(note_id)
+
+    if not result:
+        raise HTTPException(status_code=404, detail='Note not found!')
+    elif not result['title'].strip() or not result['content'].strip():
+        raise HTTPException(status_code=400, detail='Title or content missing')
+    
+    result['archived'] = True
+
 @app.put("/notes/{note_id}")
 async def update_note(note_id: int, note: NoteUpdate):
     result = find_note(note_id)
@@ -91,39 +123,6 @@ async def update_note(note_id: int, note: NoteUpdate):
     result["archived"] = note.archived
 
     return result
-
-@app.put("/notes/{note_id}/pin")
-async def pin_note(note_id: int):
-    result = find_note(note_id)
-
-    if not result:
-        raise HTTPException(status_code=404, detail='Note not found!')
-    elif not result['title'].strip() or not result['content'].strip():
-        raise HTTPException(status_code=400, detail='Title or content missing')
-    
-    result['pin'] = True
-
-@app.put("/notes/{note_id}/pin")
-async def pin_note(note_id: int):
-    result = find_note(note_id)
-
-    if not result:
-        raise HTTPException(status_code=404, detail='Note not found!')
-    elif not result['title'].strip() or not result['content'].strip():
-        raise HTTPException(status_code=400, detail='Title or content missing')
-    
-    result['pin'] = False
-
-@app.put("/notes/{note_id}/archive")
-async def pin_note(note_id: int):
-    result = find_note(note_id)
-
-    if not result:
-        raise HTTPException(status_code=404, detail='Note not found!')
-    elif not result['title'].strip() or not result['content'].strip():
-        raise HTTPException(status_code=400, detail='Title or content missing')
-    
-    result['archived'] = True
 
 @app.delete("/notes/{note_id}")
 async def delete_note(note_id: int):
