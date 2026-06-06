@@ -72,13 +72,15 @@ async def get_notes(
     sorted_list = sorted(notes, key=lambda d: d['pinned'], reverse=True)
     if archived:
         return sorted_list[skip: skip + limit]
+    elif not archived:
+        return [note for note in sorted_list if not note["archived"]][skip: skip + limit]
     
     if tag:
         return [note for note in notes if note["tag"] == tag][skip: skip + limit]
 
     if pinned:
         return [note for note in notes if note["pinned"]][skip: skip + limit]
-    else:
+    elif not pinned:
         return [note for note in notes if not note["pinned"]][skip: skip + limit]
     
     if search:
@@ -138,7 +140,7 @@ async def update_note(note_id: int, note: NoteUpdate):
 
     return result
 
-@app.delete("/notes/{note_id}")
+@app.delete("/notes/{note_id}", status_code=204)
 async def delete_note(note_id: int):
     note = find_note(note_id)
 
