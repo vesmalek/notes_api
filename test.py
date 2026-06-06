@@ -147,19 +147,19 @@ print("\n── Confirm archived note hidden in default list ──")
 r = requests.get(f"{BASE_URL}/notes")
 print(r.status_code, r.json())   # id=2 should not appear
 
-# print("\n── Empty title validation ──")
-# r = requests.post(f"{BASE_URL}/notes", json={
-#     "title": "",
-#     "content": "This should fail"
-# })
-# print(r.status_code, r.json())   # 400
+print("\n── Empty title validation ──")
+r = requests.post(f"{BASE_URL}/notes", json={
+    "title": "",
+    "content": "This should fail"
+})
+print(r.status_code, r.json())   # 400
 
-# print("\n── Empty content validation ──")
-# r = requests.post(f"{BASE_URL}/notes", json={
-#     "title": "Valid title",
-#     "content": ""
-# })
-# print(r.status_code, r.json())   # 400
+print("\n── Empty content validation ──")
+r = requests.post(f"{BASE_URL}/notes", json={
+    "title": "Valid title",
+    "content": ""
+})
+print(r.status_code, r.json())   # 400
 
 # print("\n── Confirm pinned notes appear first ──")
 # r = requests.get(f"{BASE_URL}/notes")
