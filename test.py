@@ -161,10 +161,10 @@ r = requests.post(f"{BASE_URL}/notes", json={
 })
 print(r.status_code, r.json())   # 400
 
-# print("\n── Confirm pinned notes appear first ──")
-# r = requests.get(f"{BASE_URL}/notes")
-# print(r.status_code, r.json())   # pinned notes at the top
+print("\n── Confirm pinned notes appear first ──")
+r = requests.get(f"{BASE_URL}/notes")
+print(r.status_code, r.json())   # pinned notes at the top
 
-# print("\n── Pin note that doesn't exist ──")
-# r = requests.put(f"{BASE_URL}/notes/999/pin")
-# print(r.status_code, r.json())   # 404
+print("\n── Pin note that doesn't exist ──")
+r = requests.put(f"{BASE_URL}/notes/999/pin")
+print(r.status_code, r.json())   # 404
