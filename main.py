@@ -69,29 +69,26 @@ async def get_notes(
     pinned: bool | None = None,
     search: str | None = None 
 ):
-    sorted_list = sorted(notes, key=lambda d: d['pinned'], reverse=True)
+    sorted_notes = sorted(notes, key=lambda d: d['pinned'], reverse=True)
+
     if archived:
-        return sorted_list[skip: skip + limit]
-    elif not archived:
-        return [note for note in sorted_list if not note["archived"]][skip: skip + limit]
+        return sorted_notes[skip: skip + limit]
     
     if tag:
-        return [note for note in notes if note["tag"] == tag][skip: skip + limit]
-
+        return [note for note in sorted_notes if note['tag'] == tag][skip: skip + limit]
+    
     if pinned:
-        return [note for note in notes if note["pinned"]][skip: skip + limit]
-    elif not pinned:
-        return [note for note in notes if not note["pinned"]][skip: skip + limit]
+        return [note for note in sorted_notes if note["pinned"]][skip: skip + limit]
     
     if search:
         search_results = []
-        for note in notes:
+        for note in sorted_notes:
             if search in note["title"] or search in note["content"] or search in note["tag"]:
                 search_results.append(note)
         return search_results[skip: skip + limit]
-    
-    return [note for note in sorted_list if not note['archived']][skip: skip + limit]
 
+    return [note for note in sorted_notes if not note["archived"]][skip: skip + limit]
+    
 @app.put("/notes/{note_id}/pin")
 async def pin_note(note_id: int):
     result = find_note(note_id)

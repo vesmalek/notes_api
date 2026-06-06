@@ -89,41 +89,41 @@ print(r.status_code, r.json())   # 404
 
 # ── Day 02 Tests ───────────────────────────────────────────────────────────
 
-# print("\n" + "=" * 50)
-# print("DAY 02 — List Endpoint With Filtering and Search")
-# print("=" * 50)
+print("\n" + "=" * 50)
+print("DAY 02 — List Endpoint With Filtering and Search")
+print("=" * 50)
 
-# print("\n── All notes (archived hidden by default) ──")
-# r = requests.get(f"{BASE_URL}/notes")
-# print(r.status_code, r.json())
+print("\n── All notes (archived hidden by default) ──")
+r = requests.get(f"{BASE_URL}/notes")
+print(r.status_code, r.json())
 
-# print("\n── All notes including archived ──")
-# r = requests.get(f"{BASE_URL}/notes", params={"archived": "true"})
-# print(r.status_code, r.json())
+print("\n── All notes including archived ──")
+r = requests.get(f"{BASE_URL}/notes", params={"archived": "true"})
+print(r.status_code, r.json())
 
-# print("\n── Filter by tag=learning ──")
-# r = requests.get(f"{BASE_URL}/notes", params={"tag": "learning"})
-# print(r.status_code, r.json())
+print("\n── Filter by tag=learning ──")
+r = requests.get(f"{BASE_URL}/notes", params={"tag": "learning"})
+print(r.status_code, r.json())
 
-# print("\n── Filter by pinned=true ──")
-# r = requests.get(f"{BASE_URL}/notes", params={"pinned": "true"})
-# print(r.status_code, r.json())
+print("\n── Filter by pinned=true ──")
+r = requests.get(f"{BASE_URL}/notes", params={"pinned": "true"})
+print(r.status_code, r.json())
 
-# print("\n── Filter by pinned=false ──")
-# r = requests.get(f"{BASE_URL}/notes", params={"pinned": "false"})
-# print(r.status_code, r.json())
+print("\n── Filter by pinned=false ──")
+r = requests.get(f"{BASE_URL}/notes", params={"pinned": "false"})
+print(r.status_code, r.json())
 
-# print("\n── Search by keyword 'FastAPI' ──")
-# r = requests.get(f"{BASE_URL}/notes", params={"search": "FastAPI"})
-# print(r.status_code, r.json())
+print("\n── Search by keyword 'FastAPI' ──")
+r = requests.get(f"{BASE_URL}/notes", params={"search": "FastAPI"})
+print(r.status_code, r.json())
 
-# print("\n── Search by keyword that doesn't match anything ──")
-# r = requests.get(f"{BASE_URL}/notes", params={"search": "blockchain"})
-# print(r.status_code, r.json())   # empty list
+print("\n── Search by keyword that doesn't match anything ──")
+r = requests.get(f"{BASE_URL}/notes", params={"search": "blockchain"})
+print(r.status_code, r.json())   # empty list
 
-# print("\n── Pagination — skip=1 limit=2 ──")
-# r = requests.get(f"{BASE_URL}/notes", params={"skip": 1, "limit": 2})
-# print(r.status_code, r.json())
+print("\n── Pagination — skip=1 limit=2 ──")
+r = requests.get(f"{BASE_URL}/notes", params={"skip": 1, "limit": 2})
+print(r.status_code, r.json())
 
 
 # ── Day 03 Tests ───────────────────────────────────────────────────────────
