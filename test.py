@@ -2,7 +2,6 @@ import requests
 
 BASE_URL = "http://127.0.0.1:8000"
 
-# TODO: compare the endpoint names and arguments with the main.py if they match
 # ── Day 01 Tests ───────────────────────────────────────────────────────────
 
 print("=" * 50)
