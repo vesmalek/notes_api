@@ -49,6 +49,14 @@ async def get_note(note_id: int):
     
     return note
 
+# - Filter by `pinned` status — show only pinned or unpinned notes
+# - Filter by `archived` status — show only archived or non-archived notes
+# - `skip` and `limit` for pagination
+# - `search` — keyword that appears in the title
+# check if archived=true only returns archived notes
+# - If a note ID doesn't exist for any operation, return a proper `404`
+# - `title` and `content` cannot be empty strings — if they are, return a `400` error
+
 @app.get("/notes")
 async def get_notes(
     skip: int=0, 
@@ -75,7 +83,6 @@ async def get_notes(
         return search_results[skip: skip + limit]
     sorted_list = sorted(notes, key=lambda d: d['pinned'], reverse=True)
     
-    # - Archived notes should NOT appear in the default list unless the client explicitly filters `?archived=true`
     return [note for note in sorted_list if not note['archived']][skip: skip + limit]
 
 @app.put("/notes/{note_id}/pin")
