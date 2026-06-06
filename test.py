@@ -127,25 +127,25 @@ print(r.status_code, r.json())
 
 # ── Day 03 Tests ───────────────────────────────────────────────────────────
 
-# print("\n" + "=" * 50)
-# print("DAY 03 — Action Endpoints and Business Rules")
-# print("=" * 50)
+print("\n" + "=" * 50)
+print("DAY 03 — Action Endpoints and Business Rules")
+print("=" * 50)
 
-# print("\n── Pin note id=2 ──")
-# r = requests.put(f"{BASE_URL}/notes/2/pin")
-# print(r.status_code, r.json())   # pinned should be True
+print("\n── Pin note id=2 ──")
+r = requests.put(f"{BASE_URL}/notes/2/pin")
+print(r.status_code, r.json())   # pinned should be True
 
-# print("\n── Unpin note id=1 ──")
-# r = requests.put(f"{BASE_URL}/notes/1/unpin")
-# print(r.status_code, r.json())   # pinned should be False
+print("\n── Unpin note id=1 ──")
+r = requests.put(f"{BASE_URL}/notes/1/unpin")
+print(r.status_code, r.json())   # pinned should be False
 
-# print("\n── Archive note id=2 ──")
-# r = requests.put(f"{BASE_URL}/notes/2/archive")
-# print(r.status_code, r.json())   # archived should be True
+print("\n── Archive note id=2 ──")
+r = requests.put(f"{BASE_URL}/notes/2/archive")
+print(r.status_code, r.json())   # archived should be True
 
-# print("\n── Confirm archived note hidden in default list ──")
-# r = requests.get(f"{BASE_URL}/notes")
-# print(r.status_code, r.json())   # id=2 should not appear
+print("\n── Confirm archived note hidden in default list ──")
+r = requests.get(f"{BASE_URL}/notes")
+print(r.status_code, r.json())   # id=2 should not appear
 
 # print("\n── Empty title validation ──")
 # r = requests.post(f"{BASE_URL}/notes", json={

@@ -99,6 +99,7 @@ async def pin_note(note_id: int):
         raise HTTPException(status_code=400, detail='Title or content missing')
     
     result['pinned'] = True
+    return result
 
 @app.put("/notes/{note_id}/unpin")
 async def pin_note(note_id: int):
@@ -110,6 +111,7 @@ async def pin_note(note_id: int):
         raise HTTPException(status_code=400, detail='Title or content missing')
     
     result['pinned'] = False
+    return result
 
 @app.put("/notes/{note_id}/archive")
 async def pin_note(note_id: int):
@@ -121,6 +123,7 @@ async def pin_note(note_id: int):
         raise HTTPException(status_code=400, detail='Title or content missing')
     
     result['archived'] = True
+    return result
 
 @app.put("/notes/{note_id}")
 async def update_note(note_id: int, note: NoteUpdate):
