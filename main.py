@@ -74,7 +74,9 @@ async def get_notes(
                 search_results.append(note)
         return search_results[skip: skip + limit]
     sorted_list = sorted(notes, key=lambda d: d['pinned'], reverse=True)
-    return sorted_list[skip: skip + limit]
+    
+    # - Archived notes should NOT appear in the default list unless the client explicitly filters `?archived=true`
+    return [note for note in sorted_list if not note['archived']][skip: skip + limit]
 
 @app.put("/notes/{note_id}/pin")
 async def pin_note(note_id: int):
