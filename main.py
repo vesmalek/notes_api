@@ -52,14 +52,6 @@ async def get_note(note_id: int):
     
     return note
 
-# - Filter by `pinned` status — show only pinned or unpinned notes
-# - Filter by `archived` status — show only archived or non-archived notes
-# - `skip` and `limit` for pagination
-# - `search` — keyword that appears in the title
-# check if archived=true only returns archived notes
-# - If a note ID doesn't exist for any operation, return a proper `404`
-# - `title` and `content` cannot be empty strings — if they are, return a `400` error
-
 @app.get("/notes")
 async def get_notes(
     skip: int=0, 
@@ -95,8 +87,6 @@ async def pin_note(note_id: int):
 
     if not result:
         raise HTTPException(status_code=404, detail='Note not found!')
-    elif not result['title'].strip() or not result['content'].strip():
-        raise HTTPException(status_code=400, detail='Title or content missing')
     
     result['pinned'] = True
     return result
@@ -107,8 +97,6 @@ async def pin_note(note_id: int):
 
     if not result:
         raise HTTPException(status_code=404, detail='Note not found!')
-    elif not result['title'].strip() or not result['content'].strip():
-        raise HTTPException(status_code=400, detail='Title or content missing')
     
     result['pinned'] = False
     return result
@@ -119,8 +107,6 @@ async def pin_note(note_id: int):
 
     if not result:
         raise HTTPException(status_code=404, detail='Note not found!')
-    elif not result['title'].strip() or not result['content'].strip():
-        raise HTTPException(status_code=400, detail='Title or content missing')
     
     result['archived'] = True
     return result
@@ -131,6 +117,8 @@ async def update_note(note_id: int, note: NoteUpdate):
 
     if not result:
         raise HTTPException(status_code=404, detail="Note not found!")
+    elif not result['title'].strip() or not result['content'].strip():
+        raise HTTPException(status_code=400, detail='Title or content missing')
     
     result["title"] = note.title
     result["content"] = note.content
