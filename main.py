@@ -28,6 +28,9 @@ def find_note(note_id: int) -> dict | None:
 
 @app.post("/notes", status_code=201)
 async def create_note(note: NoteCreate):
+    if not note.title or not note.content:
+        raise HTTPException(status_code=400, detail='Title/content is empty')
+    
     global next_id
 
     new_note = {
@@ -66,14 +69,17 @@ async def get_notes(
     pinned: bool | None = None,
     search: str | None = None 
 ):
+    sorted_list = sorted(notes, key=lambda d: d['pinned'], reverse=True)
     if archived:
-        return [note for note in notes if note["archived"]][skip: skip + limit]
+        return sorted_list[skip: skip + limit]
     
     if tag:
         return [note for note in notes if note["tag"] == tag][skip: skip + limit]
 
     if pinned:
         return [note for note in notes if note["pinned"]][skip: skip + limit]
+    else:
+        return [note for note in notes if not note["pinned"]][skip: skip + limit]
     
     if search:
         search_results = []
@@ -81,7 +87,6 @@ async def get_notes(
             if search in note["title"] or search in note["content"] or search in note["tag"]:
                 search_results.append(note)
         return search_results[skip: skip + limit]
-    sorted_list = sorted(notes, key=lambda d: d['pinned'], reverse=True)
     
     return [note for note in sorted_list if not note['archived']][skip: skip + limit]
 
