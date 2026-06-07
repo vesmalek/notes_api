@@ -63,7 +63,6 @@ async def get_notes(
 ):
     sorted_notes = sorted(notes, key=lambda d: d['pinned'], reverse=True)
     result = sorted_notes
-    # archived, tag, pinned, search, paginate last
     
     if not archived:
         result = [n for n in result if not n['archived']]
