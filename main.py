@@ -28,7 +28,7 @@ def find_note(note_id: int) -> dict | None:
 
 @app.post("/notes", status_code=201)
 async def create_note(note: NoteCreate):
-    if not note.title or not note.content:
+    if not note.title.strip() or not note.content.strip():
         raise HTTPException(status_code=400, detail='Title/content is empty')
     
     global next_id
