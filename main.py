@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from fastapi import FastAPI, HTTPException
+from typing import Annotated
+from fastapi import FastAPI, HTTPException, Query
 
 app = FastAPI()
 
@@ -57,9 +58,19 @@ async def get_notes(
     skip: int=0, 
     limit: int = 10,
     archived: bool = False,
-    tag: str | None = None,
+    tag: Annotated[str | None, Query(
+        title='Tag',
+        description='Keyword to filter notes by Tag',
+        min_length=2,
+        max_length=30
+    )] = None,
     pinned: bool | None = None,
-    search: str | None = None 
+    search: Annotated[str | None, Query(
+        title='Search',
+        description='Keyword to find in note title',
+        min_length=2,
+        max_length=30
+    )] = None 
 ):
     sorted_notes = sorted(notes, key=lambda d: d['pinned'], reverse=True)
     result = sorted_notes
