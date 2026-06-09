@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Annotated
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Path
 
 app = FastAPI()
 
@@ -21,7 +21,7 @@ class NoteUpdate(BaseModel):
 notes = []
 next_id: int = 1
 
-def find_note(note_id: int) -> dict | None:
+def find_note(note_id: Annotated[int, Path(ge=1)]) -> dict | None:
     for note in notes:
         if note["id"] == note_id:
             return note
@@ -45,7 +45,7 @@ async def create_note(note: NoteCreate):
     return new_note
 
 @app.get("/notes/{note_id}")
-async def get_note(note_id: int):
+async def get_note(note_id: Annotated[int, Path(ge=1)]):
     note = find_note(note_id)
     
     if not note:
@@ -90,7 +90,7 @@ async def get_notes(
     return result[skip: skip + limit]
     
 @app.put("/notes/{note_id}/pin")
-async def pin_note(note_id: int):
+async def pin_note(note_id: Annotated[int, Path(ge=1)]):
     result = find_note(note_id)
 
     if not result:
@@ -100,7 +100,7 @@ async def pin_note(note_id: int):
     return result
 
 @app.put("/notes/{note_id}/unpin")
-async def unpin_note(note_id: int):
+async def unpin_note(note_id: Annotated[int, Path(ge=1)]):
     result = find_note(note_id)
 
     if not result:
@@ -110,7 +110,7 @@ async def unpin_note(note_id: int):
     return result
 
 @app.put("/notes/{note_id}/archive")
-async def archive_note(note_id: int):
+async def archive_note(note_id: Annotated[int, Path(ge=1)]):
     result = find_note(note_id)
 
     if not result:
@@ -120,7 +120,7 @@ async def archive_note(note_id: int):
     return result
 
 @app.put("/notes/{note_id}")
-async def update_note(note_id: int, note: NoteUpdate):
+async def update_note(note_id: Annotated[int, Path(ge=1)], note: NoteUpdate):
     result = find_note(note_id)
 
     if not result:
@@ -138,7 +138,7 @@ async def update_note(note_id: int, note: NoteUpdate):
     return result
 
 @app.delete("/notes/{note_id}", status_code=204)
-async def delete_note(note_id: int):
+async def delete_note(note_id: Annotated[int, Path(ge=1)]):
     note = find_note(note_id)
 
     if not note:
