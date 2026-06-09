@@ -21,7 +21,7 @@ class NoteUpdate(BaseModel):
 notes = []
 next_id: int = 1
 
-def find_note(note_id: Annotated[int, Path(ge=1)]) -> dict | None:
+def find_note(note_id: int) -> dict | None:
     for note in notes:
         if note["id"] == note_id:
             return note
