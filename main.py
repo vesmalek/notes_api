@@ -55,8 +55,8 @@ async def get_note(note_id: Annotated[int, Path(ge=1)]):
 
 @app.get("/notes")
 async def get_notes(
-    skip: int=0, 
-    limit: int = 10,
+    skip: Annotated[int, Query(ge=0)]=0, 
+    limit: Annotated[int, Query(ge=1, le=100)] = 10,
     archived: bool = False,
     tag: Annotated[str | None, Query(
         title='Tag',
