@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from typing import Annotated
+from pydantic import BaseModel, Field
+from typing import Annotated, Literal
 from fastapi import FastAPI, HTTPException, Query, Path
 
 app = FastAPI()
@@ -17,6 +17,26 @@ class NoteUpdate(BaseModel):
     tag: str = "general"
     pinned: bool = False
     archived: bool = False
+
+class NoteFilters(BaseModel):
+    skip: int = Field(0, ge=0)
+    limit: int = Field(10, ge=1, le=100)
+    archived: bool = False
+    tag: str | None = Field(
+        None,
+        title='Tag',
+        description='Keyword to filter notes by Tag',
+        min_length=2,
+        max_length=30
+    )
+    pinned: bool | None = None
+    search: str | None = Field(
+        None,
+        title='Search',
+        description='Keyword to find in note title',
+        min_length=2,
+        max_length=30
+    )
 
 notes = []
 next_id: int = 1
@@ -54,40 +74,23 @@ async def get_note(note_id: Annotated[int, Path(ge=1)]):
     return note
 
 @app.get("/notes")
-async def get_notes(
-    skip: Annotated[int, Query(ge=0)]=0, 
-    limit: Annotated[int, Query(ge=1, le=100)] = 10,
-    archived: bool = False,
-    tag: Annotated[str | None, Query(
-        title='Tag',
-        description='Keyword to filter notes by Tag',
-        min_length=2,
-        max_length=30
-    )] = None,
-    pinned: bool | None = None,
-    search: Annotated[str | None, Query(
-        title='Search',
-        description='Keyword to find in note title',
-        min_length=2,
-        max_length=30
-    )] = None 
-):
+async def get_notes(filters: Annotated[NoteFilters, Query()]):
     sorted_notes = sorted(notes, key=lambda d: d['pinned'], reverse=True)
     result = sorted_notes
     
-    if not archived:
+    if not filters.archived:
         result = [n for n in result if not n['archived']]
 
-    if tag:
-        result = [n for n in result if n['tag'] == tag]
+    if filters.tag:
+        result = [n for n in result if n['tag'] == filters.tag]
 
-    if pinned is not None:
-        result = [n for n in result if n['pinned'] == pinned]
+    if filters.pinned is not None:
+        result = [n for n in result if n['pinned'] == filters.pinned]
 
-    if search:
-        result = [n for n in result if search.lower() in n['title'].lower()]
+    if filters.search:
+        result = [n for n in result if filters.search.lower() in n['title'].lower()]
 
-    return result[skip: skip + limit]
+    return result[filters.skip: filters.skip + filters.limit]
     
 @app.put("/notes/{note_id}/pin")
 async def pin_note(note_id: Annotated[int, Path(ge=1)]):
