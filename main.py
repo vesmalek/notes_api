@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Annotated, Literal
+from typing import Annotated
 from fastapi import FastAPI, HTTPException, Query, Path
 
 app = FastAPI()
